@@ -13,12 +13,13 @@ import play.api.libs.json._
 @Singleton
 class ListaController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
+  //the model. GET
   case class ListaItem(id: Long, name: String, isOk: Boolean, address: String)
   //json
-  implicit val todoListJson = Json.format[ListaItem]
+  implicit val todoListaJson = Json.format[ListaItem]
   val Lista = List(ListaItem(1, "javier", true, "oxford street"),
               ListaItem(2, "juan", false, "alfonso X street"),
-              ListaItem(2, "ana", false, "uria street")
+              ListaItem(3, "ana", false, "uria street")
               )
 
   def getAll(): Action[AnyContent] = Action {
@@ -39,5 +40,30 @@ class ListaController @Inject()(val controllerComponents: ControllerComponents) 
     }
   }
 
+  //the model. POST
+  //case class NewListaId(id: Long, name: String, isOk: Boolean, address: String)
+  case class NewListaId(name: String, isOk: Boolean, address: String)
+  implicit val newListaJson = Json.format[NewListaId]
+  //crear objeto del json
+  def addNewId() = Action { implicit request =>
+    val content = request.body
+    val jsonObject = content.asJson
+    val todoListItem: Option[NewListaId] =
+      jsonObject.flatMap(
+        Json.fromJson[NewListaId](_).asOpt
+      )
+    //añadir objeto
+    todoListItem match {
+      case Some(newItem) =>
+        val nextId = Lista.map(_.id).max + 1
+        val toAdd = ListaItem(nextId, newItem.name, newItem.isOk, newItem.address)
+        val y = toAdd :: Lista  //se añade de derecha a izquierda
+        Ok(Json.toJson(y))
+        //Ok(Json.toJson(toAdd))
+        //Created(Json.toJson(toAdd))
+      case None => BadRequest
+    }
+
+  }
 
 }

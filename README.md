@@ -17,7 +17,7 @@ api/app
 cd api
 $ sbt run
 
-## comprobar endpoint
+## GET. comprobar endpoint
 1. desde postman:
 GET: localhost:9000/lista
 2. curl -v localhost:9000/lista
@@ -26,4 +26,21 @@ http://localhost:9000/lista
 http://localhost:9000/lista/1
 http://localhost:9000/lista/4
 
+## POST. comprobar endpoint
+curl --location --request POST 'localhost:9000/lista' \
+--header 'Content-Type: application/json' \
+--data-raw '
+{    
+"name": "ana",
+"isOk": false,
+"address": "uria street"
+}
+'
+
+## postman
+{    
+"name": "ana",
+"isOk": false,
+"address": "uria street"
+}
 
