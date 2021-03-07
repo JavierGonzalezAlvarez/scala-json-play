@@ -29,4 +29,15 @@ class ListaController @Inject()(val controllerComponents: ControllerComponents) 
     }
   }
 
+  def getId(id: Long) = Action {
+    val foundId = Lista.find(_.id == id)
+    foundId match {
+      case Some(id) => Ok(Json.toJson(id))
+      case None => NotFound(Json.obj("Lo siento" -> s"No hay id: $id"))
+      //case None => NotFound
+      //case None => NoContent
+    }
+  }
+
+
 }

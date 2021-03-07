@@ -22,6 +22,8 @@ $ sbt run
 GET: localhost:9000/lista
 2. curl -v localhost:9000/lista
 
-http://localhost:9000/
+http://localhost:9000/lista
+http://localhost:9000/lista/1
+http://localhost:9000/lista/4
 
 
